@@ -1,22 +1,170 @@
 .App {
-  text-align: center;
+    text-align: center;
+    font-size: 1.4rem;
 }
 
-.App-logo {
-  height: 40vmin;
+.Header {
+    padding: 12px 12vw;
+    text-align: left;
+    background-color: #282c34;
+    color: white;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.Header > .Id {
+    display: block;
+    float: right;
+    font-size: 1.1rem;
 }
 
-.App-link {
-  color: #09d3ac;
+.Admin {
+    display: inline-block;
+    background-color: orangered;
+    padding: 4px 8px;
+    color: white;
+    margin-left: 12px;
+    border-radius: 4px;
+    border: none;
+}
+
+.Workflow {
+    float: right;
+    display: block;
+    background-color: #eaeaea;
+    padding: 18px 0px 18px 34px;
+    margin-right: 12vw;
+}
+
+.Workflow li {
+    text-align: left;
+    list-style-type: none;
+    background-repeat: no-repeat;
+    background-size: 24px;
+    background-position: left 16px;
+    padding: 12px 34px;
+}
+
+.Workflow li.pending {
+    background-image: url('/pending.svg');
+}
+
+.Workflow li.done {
+    background-image: url('/done.svg');
+}
+
+.Next, .Vote, .Ajoute {
+    display: block;
+    border-radius: 4px;
+    border: none;
+    font-size: 1.2rem;
+    color: white;
+    padding: 4px 12px;
+    margin-top: 12px;
+    background-color: orangered;
+    cursor: pointer;
+}
+
+.Ajoute {
+    background-color: yellowgreen;
+}
+
+.Main {
+    display: block;
+    text-align: center;
+    padding: 12px 0px 12px 12vw;
+    width: calc(80% - 12vw);
+}
+
+h1 {
+    color: #282c34;
+    font-weight: normal;
+}
+
+h1:first-letter {
+    text-transform: uppercase;
+}
+
+p {
+    display: inline-block;
+    color: white;
+    padding: 18px 28px 18px 52px;
+    border-radius: 4px;
+    background-repeat: no-repeat;
+    background-position: 18px center;
+    background-size: 28px;
+    text-transform: lowercase;
+}
+
+p.Alert {
+    background-color: rgb(153, 48, 48);
+    background-image: url('/alert.svg');
+}
+
+p.Info {
+    background-color: grey;
+    background-image: url('/info.svg');
+}
+
+p.Validate {
+    background-color: yellowgreen;
+    background-image: url('/validate.svg');
+}
+
+form {
+    display: inline-block;
+    padding: 24px;
+}
+
+label {
+    text-align: left;
+    display: block;
+}
+
+input[type=text] {
+    display: block;
+    width: 300px;
+    margin-bottom: 24px;
+    border-radius: 4px;
+    border: 1px solid grey;
+    font-size: 1.2rem;
+    padding: 4px 12px;
+    margin-top: 12px;
+}
+
+.Proposals, .Voters {
+    margin: 0px;
+    padding: 0px;
+    display: inline-block;
+}
+
+.Proposals li, .Voters li {
+    list-style-type: none;
+    background-color: #eaeaea;
+    margin: 0px 0px 20px 0px;
+    padding: 20px;
+    min-width: 300px;
+    text-align: left;
+}
+
+.Vote {
+    float: right;
+}
+
+.VoteCount {
+    font-weight: bold;
+    color: rgb(22, 102, 22);
+    margin-left: 24px;
+}
+
+div.Loading {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    background-color: white;
+    color: black;
+    font-size: 4vw;
+    line-height: 100vh;
+    text-align: center;
+    font-weight: bold;
 }
