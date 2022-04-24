@@ -59,19 +59,16 @@
     color: white;
     padding: 4px 12px;
     margin-top: 12px;
-    background-color: orangered;
-    cursor: pointer;
-}
-
-.Ajoute {
     background-color: yellowgreen;
+    cursor: pointer;
 }
 
 .Main {
     display: block;
     text-align: center;
-    padding: 12px 0px 12px 12vw;
-    width: calc(80% - 12vw);
+    margin: auto;
+    margin-left: 12vw;
+    margin-right: calc(12vw + 430px);
 }
 
 h1 {

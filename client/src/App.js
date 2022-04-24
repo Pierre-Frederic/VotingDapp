@@ -13,6 +13,7 @@ class App extends Component {
         owner: null,
         user: null,
         workflowStatus: null,
+        voterNbrMax: null,
         voters: [],
         proposals: [],
         loaded: false
@@ -95,6 +96,7 @@ class App extends Component {
     runInit = async () => {
         await this.getOwner();
         await this.getWorkflowStatus();
+        await this.getVoterNbrMax();
         await this.getVoters();
         await this.getProposals();
         await this.getUser();
@@ -124,6 +126,12 @@ class App extends Component {
             'résultat du vote'
         ];
         return workflowDescription[workflowStatus];
+    }
+
+    getVoterNbrMax = async () => {
+        const { contract, accounts } = this.state;
+        let voterNbrMax = await contract.methods.nbrVotersMax().call({ from: accounts[0] });
+        this.setState({ voterNbrMax });
     }
 
     getVoters = async () => {
@@ -158,12 +166,8 @@ class App extends Component {
         this.setState({ proposals });
     };
 
-    
-
     getUser = async () => {
-
         const { web3, owner, accounts, voters } = this.state;
-
         let user = {
             address: accounts[0],
             isOwner: false,
@@ -233,11 +237,9 @@ class App extends Component {
     }
 
     render() {
-        
         if (!this.state.web3 || !this.state.loaded) {
             return <Loading></Loading>;
         }
-
         return (
             <div className="App">
                 <div className="Header">
@@ -264,13 +266,30 @@ class App extends Component {
                         <section>
                             {this.state.user.isOwner &&
                                 <div>
-                                    <form onSubmit={this.addVoter}>
-                                        <label>
-                                            indiquez une adresse à ajouter
-                                            <input type="text" id="newVoterAddress" defaultValue="" />
-                                        </label>
-                                        <input type="submit" value="valider" className="Ajoute" />
-                                    </form>
+                                    {this.state.voterNbrMax <= this.state.voters.length &&
+                                        <div>
+                                            <p className="Alert">
+                                                Le nombre max de votants a été atteint
+                                            </p>
+                                            <br/>
+                                        </div>
+                                    }
+                                    {this.state.voterNbrMax > this.state.voters.length &&
+                                        <div>
+                                            <p className="Info">
+                                                Nombre max de votants : 
+                                                {" "+this.state.voterNbrMax}
+                                            </p>
+                                            <br/>
+                                            <form onSubmit={this.addVoter}>
+                                                <label>
+                                                    indiquez une adresse à ajouter
+                                                    <input type="text" id="newVoterAddress" defaultValue="" />
+                                                </label>
+                                                <input type="submit" value="valider" className="Ajoute" />
+                                            </form>
+                                        </div>
+                                    }
                                     <br />
                                     <Voters voters={this.state.voters}></Voters>
                                 </div>
@@ -280,7 +299,6 @@ class App extends Component {
                             }
                         </section>
                     }
-                    
                     {this.state.workflowStatus === 1 && 
                         <section>
                             {this.state.user.isOwner && this.state.proposals.length === 0 &&
@@ -313,7 +331,6 @@ class App extends Component {
                             }
                         </section>
                     }
-
                     {this.state.workflowStatus === 2 &&
                         <div>
                             {this.state.user.isVoter && 
@@ -335,7 +352,6 @@ class App extends Component {
                             }
                         </div>
                     }
-
                     {this.state.workflowStatus === 3 &&
                         <div>
                             {this.state.user.isVoter && !this.state.user.hasVoted &&
@@ -362,7 +378,6 @@ class App extends Component {
                             }
                         </div>
                     }
-
                     {this.state.workflowStatus === 4 &&
                         <div>
                             {this.state.user.isVoter &&
@@ -381,7 +396,6 @@ class App extends Component {
                             }
                         </div>
                     }
-
                     {this.state.workflowStatus === 5 &&
                         <section>
                             {this.state.user.isVoter &&
@@ -460,13 +474,11 @@ class Voters extends Component {
 }
 
 class ProposalsList extends Component {
-
     vote = async (proposalId) => {
         const contract = this.props.contract;
         const accounts = this.props.accounts;
         await contract.methods.setVote(proposalId).send({ from: accounts[0] });        
     }
-
     render() {
         if (this.props.proposals.length === 0) {
             return <div>AUCUNE PROPOSITION ENREGISTRÉE</div>
@@ -503,17 +515,14 @@ class ProposalsList extends Component {
 }
 
 class Winner extends Component {
-
     state = {
         loaded: false,
         proposalId: null
     }
-
     componentDidMount = async () => {
         await this.getWinner();
         this.setState({ loaded: true });
     }
-
     displayWinner = () => {
         if(this.state.loaded){
             return (
@@ -536,20 +545,17 @@ class Winner extends Component {
             </Loading>
         )
     }
-
     getWinner = async () => {
         const contract = this.props.contract;
         const proposalId = await contract.methods.winningProposalID().call();
         this.setState({ proposalId });
     }
-
     render() {
         return this.displayWinner();
     }
 }
 
 class Proposal extends Component {
-    
     constructor(props) {
         super(props);
         this.state = {
@@ -559,7 +565,6 @@ class Proposal extends Component {
             voteCount: null
         };
     }
-
     componentDidMount = async () => {
         const details = await this.getDetails(this.state.proposalId);
         let description = details['description'];
@@ -567,14 +572,12 @@ class Proposal extends Component {
         let loaded = true;
         this.setState({ loaded, description, voteCount });
     }
-
     getDetails = async (proposalId) => {
         const contract = this.props.contract;
         const accounts = this.props.accounts;
         let details = await contract.methods.getOneProposal(proposalId).call({ from: accounts[0] });
         return details;
     }
-    
     displayDetails = () => {
         if (this.state.loaded) {
             return (
@@ -591,14 +594,12 @@ class Proposal extends Component {
         }
         return 'chargement...';
     }
-
     render() {
         return this.displayDetails();
     }
 }
 
 class FormProposal extends Component {
-    
     render() {
         return (
             <form onSubmit={this.props.addProposal}>
