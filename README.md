@@ -20,7 +20,7 @@ In order to prevent this vunerability :
 
 ## 3. Dapp workflow & demo
 
-See video at: YOUTUBE
+Watch video on YouTube: https://youtu.be/E146FEmbj4A
 
 ## 4. Contract & Dapp deployement
 
