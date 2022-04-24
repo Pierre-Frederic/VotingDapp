@@ -38,7 +38,7 @@ contract Voting is Ownable {
     mapping (address => Voter) voters;
 
     uint public nbrVoters;
-    uint public nbrVotersMax = 7;
+    uint public nbrVotersMax = 5;
 
     event VoterRegistered(address voterAddress); 
     event WorkflowStatusChange(WorkflowStatus previousStatus, WorkflowStatus newStatus);
